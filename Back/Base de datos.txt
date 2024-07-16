@@ -1,0 +1,660 @@
+drop index CARRERAS_PK;
+
+drop table CARRERAS;
+
+drop index RELATIONSHIP_14_FK;
+
+drop index RELATIONSHIP_13_FK;
+
+drop index ESCUADRACARRERA_PK;
+
+drop table ESCUADRACARRERA;
+
+drop index ESCUADRAS_PK;
+
+drop table ESCUADRAS;
+
+drop index ESPECIALIDADES_PK;
+
+drop table ESPECIALIDADES;
+
+drop index RELATIONSHIP_6_FK;
+
+drop index RELATIONSHIP_5_FK;
+
+drop index ETAPAS_PK;
+
+drop table ETAPAS;
+
+drop index RELATIONSHIP_7_FK;
+
+drop index FUNCIONES_PK;
+
+drop table FUNCIONES;
+
+drop index TIPOCONTEXTURA_PK;
+
+drop table TIPOCONTEXTURA;
+
+drop index TIPOETAPAS_PK;
+
+drop table TIPOETAPAS;
+
+drop index TIPOUSUARIO_PK;
+
+drop table TIPOUSUARIO;
+
+drop index RELATIONSHIP_12_FK;
+
+drop index RELATIONSHIP_11_FK;
+
+drop index RELATIONSHIP_9_FK;
+
+drop index RELATIONSHIP_8_FK;
+
+drop index USUARIO_PK;
+
+drop table USUARIO;
+
+/*==============================================================*/
+/* Table: CARRERAS                                              */
+/*==============================================================*/
+create table CARRERAS (
+   IDCARRERA            INT8                 not null,
+   PAIS                 VARCHAR(25)          not null,
+   DESCARRERA           VARCHAR(40)          not null,
+   DURACIONCARRERA      INT4                 not null,
+   LONGITUD             VARCHAR(6)           not null,
+   constraint PK_CARRERAS primary key (IDCARRERA)
+);
+
+comment on table CARRERAS is
+'Tabla que almacena información sobre las carreras.';
+
+comment on column CARRERAS.IDCARRERA is
+' Identificador único de la carrera.';
+
+comment on column CARRERAS.PAIS is
+'Descripción del pais donde se hará la carrera (máximo 25 caracteres).';
+
+comment on column CARRERAS.DESCARRERA is
+'Descripción de la carrera (máximo 40 caracteres).';
+
+comment on column CARRERAS.DURACIONCARRERA is
+'Duración de la carrera.';
+
+comment on column CARRERAS.LONGITUD is
+'Longitud de la carrera (máximo 6 caracteres).';
+
+/*==============================================================*/
+/* Index: CARRERAS_PK                                           */
+/*==============================================================*/
+create unique index CARRERAS_PK on CARRERAS (
+IDCARRERA
+);
+
+/*==============================================================*/
+/* Table: ESCUADRACARRERA                                       */
+/*==============================================================*/
+create table ESCUADRACARRERA (
+   IDESCUADRA           INT8                 not null,
+   IDCARRERA            INT8                 not null,
+   constraint PK_ESCUADRACARRERA primary key (IDESCUADRA, IDCARRERA)
+);
+
+comment on table ESCUADRACARRERA is
+'Tabla que relaciona las escuadras con las carreras.';
+
+comment on column ESCUADRACARRERA.IDESCUADRA is
+'Llave primaria y foránea que referencia a la escuadra.';
+
+comment on column ESCUADRACARRERA.IDCARRERA is
+'Llave primaria y foránea que referencia a la carrera.';
+
+/*==============================================================*/
+/* Index: ESCUADRACARRERA_PK                                    */
+/*==============================================================*/
+create unique index ESCUADRACARRERA_PK on ESCUADRACARRERA (
+IDESCUADRA,
+IDCARRERA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_13_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_13_FK on ESCUADRACARRERA (
+IDESCUADRA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_14_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_14_FK on ESCUADRACARRERA (
+IDCARRERA
+);
+
+/*==============================================================*/
+/* Table: ESCUADRAS                                             */
+/*==============================================================*/
+create table ESCUADRAS (
+   IDESCUADRA           INT8                 not null,
+   DESESCUADRA          VARCHAR(30)          not null,
+   TIEMPOESCUADRA       INT4                 not null,
+   constraint PK_ESCUADRAS primary key (IDESCUADRA)
+);
+
+comment on table ESCUADRAS is
+'Tabla que almacena información sobre las escuadras.';
+
+comment on column ESCUADRAS.IDESCUADRA is
+'Identificador único de la escuadra.';
+
+comment on column ESCUADRAS.DESESCUADRA is
+'Descripción de la escuadra (máximo 30 caracteres)';
+
+comment on column ESCUADRAS.TIEMPOESCUADRA is
+'Tiempo registrado de la escuadra (máximo 6 caracteres)';
+
+/*==============================================================*/
+/* Index: ESCUADRAS_PK                                          */
+/*==============================================================*/
+create unique index ESCUADRAS_PK on ESCUADRAS (
+IDESCUADRA
+);
+
+/*==============================================================*/
+/* Table: ESPECIALIDADES                                        */
+/*==============================================================*/
+create table ESPECIALIDADES (
+   IDESPECIALIDAD       INT8                 not null,
+   DESESPECIALIDAD      VARCHAR(30)          not null,
+   constraint PK_ESPECIALIDADES primary key (IDESPECIALIDAD)
+);
+
+comment on table ESPECIALIDADES is
+'Tabla que almacena las diferentes especialidades:
+Escaladores 
+Rodadore
+Sprinters o embaladores
+gregarios
+clasicómanos
+contrarrelojista';
+
+comment on column ESPECIALIDADES.IDESPECIALIDAD is
+'Identificador único de la especialidad.';
+
+comment on column ESPECIALIDADES.DESESPECIALIDAD is
+'Descripción de la especialidad (máximo 30 caracteres).';
+
+/*==============================================================*/
+/* Index: ESPECIALIDADES_PK                                     */
+/*==============================================================*/
+create unique index ESPECIALIDADES_PK on ESPECIALIDADES (
+IDESPECIALIDAD
+);
+
+/*==============================================================*/
+/* Table: ETAPAS                                                */
+/*==============================================================*/
+create table ETAPAS (
+   IDETAPA              INT8                 not null,
+   IDCARRERA            INT8                 not null,
+   IDTIPOETAPA          INT8                 not null,
+   DESETAPA             VARCHAR(40)          not null,
+   DURACIONETAPA        INT4                 not null,
+   LONGITUDETAPA        VARCHAR(6)           not null,
+   constraint PK_ETAPAS primary key (IDETAPA)
+);
+
+comment on table ETAPAS is
+'Tabla que almacena las diferentes etapas de las carreras.';
+
+comment on column ETAPAS.IDETAPA is
+'Identificador único de la etapa.';
+
+comment on column ETAPAS.IDCARRERA is
+'Llave foránea que referencia a la carrera.';
+
+comment on column ETAPAS.IDTIPOETAPA is
+'Llave foránea que referencia al tipo de etapa.';
+
+comment on column ETAPAS.DESETAPA is
+'Descripción de la etapa (máximo 40 caracteres).';
+
+comment on column ETAPAS.DURACIONETAPA is
+'Duración de la etapa';
+
+comment on column ETAPAS.LONGITUDETAPA is
+' Longitud de la etapa (máximo 6 caracteres).';
+
+/*==============================================================*/
+/* Index: ETAPAS_PK                                             */
+/*==============================================================*/
+create unique index ETAPAS_PK on ETAPAS (
+IDETAPA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_5_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_5_FK on ETAPAS (
+IDTIPOETAPA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_6_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_6_FK on ETAPAS (
+IDCARRERA
+);
+
+/*==============================================================*/
+/* Table: FUNCIONES                                             */
+/*==============================================================*/
+create table FUNCIONES (
+   IDFUNCION            INT8                 not null,
+   IDESPECIALIDAD       INT8                 not null,
+   DESFUNCION           VARCHAR(30)          not null,
+   constraint PK_FUNCIONES primary key (IDFUNCION)
+);
+
+comment on table FUNCIONES is
+'Tabla que almacena las diferentes funciones de las especialidades.';
+
+comment on column FUNCIONES.IDFUNCION is
+' Identificador único de la función.';
+
+comment on column FUNCIONES.IDESPECIALIDAD is
+'Llave foránea que referencia a la especialidad.';
+
+comment on column FUNCIONES.DESFUNCION is
+'Descripción de la función (máximo 30 caracteres)';
+
+/*==============================================================*/
+/* Index: FUNCIONES_PK                                          */
+/*==============================================================*/
+create unique index FUNCIONES_PK on FUNCIONES (
+IDFUNCION
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_7_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_7_FK on FUNCIONES (
+IDESPECIALIDAD
+);
+
+/*==============================================================*/
+/* Table: TIPOCONTEXTURA                                        */
+/*==============================================================*/
+create table TIPOCONTEXTURA (
+   IDTIPOCONTEXTURA     INT8                 not null,
+   DESTIPOCONTEXTURA    VARCHAR(40)          not null,
+   constraint PK_TIPOCONTEXTURA primary key (IDTIPOCONTEXTURA)
+);
+
+comment on table TIPOCONTEXTURA is
+'Tabla que almacena los diferentes tipos de contextura.';
+
+comment on column TIPOCONTEXTURA.IDTIPOCONTEXTURA is
+'Llave primaria y foránea que referencia a la carrera.';
+
+comment on column TIPOCONTEXTURA.DESTIPOCONTEXTURA is
+'Descripción de la cobertura (máximo 40 caracteres)';
+
+/*==============================================================*/
+/* Index: TIPOCONTEXTURA_PK                                     */
+/*==============================================================*/
+create unique index TIPOCONTEXTURA_PK on TIPOCONTEXTURA (
+IDTIPOCONTEXTURA
+);
+
+/*==============================================================*/
+/* Table: TIPOETAPAS                                            */
+/*==============================================================*/
+create table TIPOETAPAS (
+   IDTIPOETAPA          INT8                 not null,
+   DESTIPOETAPA         VARCHAR(30)          not null,
+   constraint PK_TIPOETAPAS primary key (IDTIPOETAPA)
+);
+
+comment on table TIPOETAPAS is
+'Tabla que almacena los diferentes tipos de etapas:
+montaña
+llano con curvas
+semi llano
+de un solo día o llano en recta';
+
+comment on column TIPOETAPAS.IDTIPOETAPA is
+'Identificador único del tipo de etapa.';
+
+comment on column TIPOETAPAS.DESTIPOETAPA is
+'Descripción del tipo de etapa (máximo 30 caracteres)';
+
+/*==============================================================*/
+/* Index: TIPOETAPAS_PK                                         */
+/*==============================================================*/
+create unique index TIPOETAPAS_PK on TIPOETAPAS (
+IDTIPOETAPA
+);
+
+/*==============================================================*/
+/* Table: TIPOUSUARIO                                           */
+/*==============================================================*/
+create table TIPOUSUARIO (
+   IDTIPOUSUARIO        INT8                 not null,
+   DESTIPOUSUARIO       VARCHAR(30)          not null,
+   constraint PK_TIPOUSUARIO primary key (IDTIPOUSUARIO)
+);
+
+comment on table TIPOUSUARIO is
+'Tabla que almacena los diferentes tipos de usuarios.';
+
+comment on column TIPOUSUARIO.IDTIPOUSUARIO is
+'Identificador único del tipo de usuario.';
+
+comment on column TIPOUSUARIO.DESTIPOUSUARIO is
+'Descripción del tipo de usuario (máximo 30 caracteres)';
+
+/*==============================================================*/
+/* Index: TIPOUSUARIO_PK                                        */
+/*==============================================================*/
+create unique index TIPOUSUARIO_PK on TIPOUSUARIO (
+IDTIPOUSUARIO
+);
+
+/* Table: USUARIO */
+create table USUARIO (
+   IDUSUARIO            INT8                 not null,
+   IDDOCUMENTO          INT8                 not null,
+   IDTIPOUSUARIO        INT8                 null,
+   IDTIPOCONTEXTURA     INT8                 null,
+   IDESPECIALIDAD       INT8                 null,
+   IDESCUADRA           INT8                 null,
+   DOCUMENTOUSUARIO     VARCHAR(10)          not null,
+   NOMBREUSUARIO        VARCHAR(30)          not null,
+   APELLIDOUSUARIO      VARCHAR(30)          not null,
+   GENEROUSUARIO        VARCHAR(10)          not null,
+   FECHANACIMIENTO      DATE                 not null,
+   CORREOUSUARIO        VARCHAR(40)          not null,
+   CONTRASENAUSUARIO    VARCHAR(40)          not null,
+   NACIONALIDAD         VARCHAR(25)          not null,
+   PESOUSUARIO          VARCHAR(4)           null,
+   POTENCIAUSUARIO      VARCHAR(4)           null,
+   ACELARACIONUSUARIO   VARCHAR(4)           null,
+   VELOCIDADPROMEDIOUSUARIO VARCHAR(4)           null,
+   VELOCIDADMAXIMAUSUARIO VARCHAR(4)           null,
+   TIEMPOCICLISTA       VARCHAR(4)           null,
+   FECHAINICIOCARRERA   DATE                 null,
+   GRADORAMPA           VARCHAR(4)           null,
+   constraint PK_USUARIO primary key (IDUSUARIO, IDDOCUMENTO)
+   constraint UQ_CORREO	USUARIO unique (CORREOUSUARIO)
+);
+
+comment on table USUARIO is
+'Tabla que almacena la información de los usuarios.';
+
+comment on column USUARIO.IDUSUARIO is
+' Identificador único del usuario.';
+
+comment on column USUARIO.IDDOCUMENTO is
+'Identificador del documento del usuario';
+
+comment on column USUARIO.IDTIPOUSUARIO is
+'Llave foránea que referencia al tipo de usuario.';
+
+comment on column USUARIO.IDTIPOCONTEXTURA is
+'Llave foránea que referencia al tipo de contextura.';
+
+comment on column USUARIO.IDESPECIALIDAD is
+'Llave foránea que referencia a la especialidad.';
+
+comment on column USUARIO.IDESCUADRA is
+' Llave foránea que referencia a la escuadra.';
+
+comment on column USUARIO.DOCUMENTOUSUARIO is
+'Unicamente se registrarán con el pasaporte';
+
+comment on column USUARIO.NOMBREUSUARIO is
+'Nombre del usuario (máximo 30 caracteres).';
+
+comment on column USUARIO.APELLIDOUSUARIO is
+'Apellido del usuario';
+
+comment on column USUARIO.GENEROUSUARIO is
+'Genero del usuario, unicamente Masculino o Femenino';
+
+comment on column USUARIO.FECHANACIMIENTO is
+'Fecha de nacimiento del usuario';
+
+comment on column USUARIO.CORREOUSUARIO is
+' Correo electrónico del usuario (máximo 40 caracteres).';
+
+comment on column USUARIO.CONTRASENAUSUARIO is
+'contraseña del usuario';
+
+comment on column USUARIO.NACIONALIDAD is
+'Nacionalidad del usuario';
+
+comment on column USUARIO.PESOUSUARIO is
+'Peso del usuario (máximo 4 caracteres).';
+
+comment on column USUARIO.POTENCIAUSUARIO is
+'Potencia del usuario (máximo 4 caracteres).';
+
+comment on column USUARIO.ACELARACIONUSUARIO is
+' Aceleración promedio del usuario ';
+
+comment on column USUARIO.VELOCIDADPROMEDIOUSUARIO is
+'Velocidad promedio del usuario ';
+
+comment on column USUARIO.VELOCIDADMAXIMAUSUARIO is
+'Velocidad máxima del usuario';
+
+comment on column USUARIO.TIEMPOCICLISTA is
+'Tiempo del ciclista';
+
+comment on column USUARIO.FECHAINICIOCARRERA is
+'Fecha de inicio de la carrera del usuario, ya sea como masajista, como director tecnico o como ciclista';
+
+comment on column USUARIO.GRADORAMPA is
+'Grado de la rampa que maneja el ciclista';
+
+/*==============================================================*/
+/* Index: USUARIO_PK                                            */
+/*==============================================================*/
+create unique index USUARIO_PK on USUARIO (
+IDUSUARIO,
+IDDOCUMENTO
+);
+/*==============================================================*/
+/* Index: UQ_COREOUSUARIO                                       */
+/*==============================================================*/
+create unique index UQ_CORREOUSUARIO on USUARIO (
+CORREOUSUARIO
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_8_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_8_FK on USUARIO (
+IDTIPOUSUARIO
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_9_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_9_FK on USUARIO (
+IDTIPOCONTEXTURA
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_11_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_11_FK on USUARIO (
+IDESPECIALIDAD
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_12_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_12_FK on USUARIO (
+IDESCUADRA
+);
+
+alter table ESCUADRACARRERA
+   add constraint FK_ESCUADRA_RELATIONS_ESCUADRA foreign key (IDESCUADRA)
+      references ESCUADRAS (IDESCUADRA)
+      on delete restrict on update restrict;
+
+alter table ESCUADRACARRERA
+   add constraint FK_ESCUADRA_RELATIONS_CARRERAS foreign key (IDCARRERA)
+      references CARRERAS (IDCARRERA)
+      on delete restrict on update restrict;
+
+alter table ETAPAS
+   add constraint FK_ETAPAS_RELATIONS_TIPOETAP foreign key (IDTIPOETAPA)
+      references TIPOETAPAS (IDTIPOETAPA)
+      on delete restrict on update restrict;
+
+alter table ETAPAS
+   add constraint FK_ETAPAS_RELATIONS_CARRERAS foreign key (IDCARRERA)
+      references CARRERAS (IDCARRERA)
+      on delete restrict on update restrict;
+
+alter table FUNCIONES
+   add constraint FK_FUNCIONE_RELATIONS_ESPECIAL foreign key (IDESPECIALIDAD)
+      references ESPECIALIDADES (IDESPECIALIDAD)
+      on delete restrict on update restrict;
+
+alter table USUARIO
+   add constraint FK_USUARIO_RELATIONS_ESPECIAL foreign key (IDESPECIALIDAD)
+      references ESPECIALIDADES (IDESPECIALIDAD)
+      on delete restrict on update restrict;
+
+alter table USUARIO
+   add constraint FK_USUARIO_RELATIONS_ESCUADRA foreign key (IDESCUADRA)
+      references ESCUADRAS (IDESCUADRA)
+      on delete restrict on update restrict;
+
+alter table USUARIO
+   add constraint FK_USUARIO_RELATIONS_TIPOUSUA foreign key (IDTIPOUSUARIO)
+      references TIPOUSUARIO (IDTIPOUSUARIO)
+      on delete restrict on update restrict;
+
+alter table USUARIO
+   add constraint FK_USUARIO_RELATIONS_TIPOCONT foreign key (IDTIPOCONTEXTURA)
+      references TIPOCONTEXTURA (IDTIPOCONTEXTURA)
+      on delete restrict on update restrict;
+
+/*
+DELETE FROM ESCUADRACARRERA;
+DELETE FROM ETAPAS;
+DELETE FROM CARRERAS;
+DELETE FROM ESCUADRAS;
+DELETE FROM FUNCIONES;
+DELETE FROM ESPECIALIDADES;
+DELETE FROM TIPOCONTEXTURA;
+DELETE FROM TIPOETAPAS;
+DELETE FROM TIPOUSUARIO;
+DELETE FROM USUARIO;
+*/
+
+INSERT INTO CARRERAS (IDCARRERA, PAIS, DESCARRERA, DURACIONCARRERA, LONGITUD) VALUES
+(1, Colombia, 'Vuelta a Colombia',15,'1200km'),
+(2, Espana, 'Vuelta a Espana',21,'2500km'),
+(3, Francia, 'Tour de Francia',23,'3500km'),
+(4, Italia, 'Giro de Italia',21,'3400km'),
+(5, Alemania, 'Vuelta a Alemania',7,'1000km');
+
+INSERT INTO ESPECIALIDADES (IDESPECIALIDAD, DESESPECIALIDAD) VALUES
+(1, 'Escaladores'),
+(2, 'Rodadores'),
+(3, 'Sprinters o embaladores'),
+(4, 'gregarios'),
+(5, 'clasicómanos'),
+(6, 'contrarrelojista');
+
+INSERT INTO TIPOETAPAS (IDTIPOETAPA, DESTIPOETAPA) VALUES
+(1, 'montaña'),
+(2, 'llano con curvas'),
+(3, 'semi llano'),
+(4, 'de un solo dia'),
+(5, 'llano en recta');
+
+INSERT INTO ESCUADRAS (IDESCUADRA, PAIS, DESESCUADRA, TIEMPOESCUADRA) VALUES
+(1, Colombia, 'Team Colombia', 50),
+(2, España, 'Movistar Team', 70),
+(3, Francia, 'Team UAE', 60),
+(4, Italia, 'Team Ineos', 65),
+(5, Alemania, 'Bora-Hansgrohe', 55);
+
+INSERT INTO FUNCIONES (IDFUNCION, IDESPECIALIDAD, DESFUNCION) VALUES
+(1, 1, 'Escalar'),
+(2, 2, 'Rodar en terrenos llanos'),
+(3, 3, 'Sprintar en etapas finales'),
+(4, 4, 'Apoyar al lider'),
+(5, 5, 'Ganar clasicas'),
+(6, 6, 'Competir en contrarreloj');
+
+INSERT INTO TIPOCONTEXTURA (IDTIPOCONTEXTURA, DESTIPOCONTEXTURA) VALUES
+(1, 'Ligera'),
+(2, 'Media'),
+(3, 'Pesado');
+
+INSERT INTO TIPOUSUARIO (IDTIPOUSUARIO, DESTIPOUSUARIO) VALUES
+(1, 'Masajista'),
+(2, 'Administrador'),
+(3, 'Director de escuadra'),
+(4, 'Ciclista');
+
+INSERT INTO ETAPAS (IDETAPA, IDCARRERA, IDTIPOETAPA, DESETAPA, DURACIONETAPA, LONGITUDETAPA) VALUES
+(1, 1, 1, 'Etapa de montaña', 5, '200km'),
+(2, 2, 2, 'Etapa llano con curvas', 3, '150km'),
+(3, 3, 3, 'Etapa semi llano', 4, '180km'),
+(4, 4, 4, 'Etapa de un solo dia', 1, '160km'),
+(5, 5, 5, 'Etapa llano en recta', 2, '140km');
+
+INSERT INTO ESCUADRACARRERA (IDESCUADRA, IDCARRERA) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
+INSERT INTO USUARIO (
+   IDUSUARIO, IDDOCUMENTO, IDTIPOUSUARIO, IDTIPOCONTEXTURA, IDESPECIALIDAD, IDESCUADRA, 
+   TIPODOCUMENTOUSUARIO, NOMBREUSUARIO, APELLIDOUSUARIO, GENEROUSUARIO, FECHANACIMIENTO, CORREOUSUARIO, 
+   CONTRASENAUSUARIO, NACIONALIDAD, PESOUSUARIO, POTENCIAUSUARIO, ACELARACIONUSUARIO, 
+   VELOCIDADPROMEDIOUSUARIO, VELOCIDADMAXIMAUSUARIO, TIEMPOCICLISTA, FECHAINICIOCARRERA, GRADORAMPA
+) VALUES
+-- Ciclistas hombres (12)
+(1, 10001, 4, 1, 1, 1, 'Pasaporte', 'Carlos', 'Pérez', 'Masculino', '2000-06-15', 'carlos.perez@example.com', 'password1', 'Colombiano', '70', '300', '5', '40', '60', '120', '2010-06-15', '8'),
+(2, 10002, 4, 2, 2, 2, 'Pasaporte', 'Luis', 'Martínez', 'Masculino', '2000-06-15', 'luis.martinez@example.com', 'password2', 'Colombiano', '75', '320', '5.5', '42', '62', '130', '2010-06-15', '9'),
+(3, 10003, 4, 3, 3, 3, 'Pasaporte', 'Jorge', 'López', 'Masculino', '2000-06-15', 'jorge.lopez@example.com', 'password3', 'Colombiano', '72', '310', '5.2', '41', '61', '125', '2010-06-15', '8'),
+(4, 10004, 4, 1, 4, 4, 'Pasaporte', 'Fernando', 'García', 'Masculino', '2000-06-15', 'fernando.garcia@example.com', 'password4', 'Colombiano', '69', '295', '4.9', '39', '59', '115', '2010-06-15', '8'),
+(5, 10005, 4, 2, 5, 5, 'Pasaporte', 'Diego', 'Fernández', 'Masculino', '2000-06-15', 'diego.fernandez@example.com', 'password5', 'Colombiano', '73', '315', '5.4', '43', '63', '135', '2010-06-15', '9'),
+(6, 10006, 4, 3, 6, 1, 'Pasaporte', 'Raúl', 'González', 'Masculino', '2000-06-15', 'raul.gonzalez@example.com', 'password6', 'Italiano', '71', '305', '5.1', '40', '60', '120', '2010-06-15', '8'),
+(7, 10007, 4, 1, 1, 2, 'Pasaporte', 'Miguel', 'Ramírez', 'Masculino', '2000-06-15', 'miguel.ramirez@example.com', 'password7', 'Italiano', '74', '325', '5.6', '44', '64', '140', '2010-06-15', '9'),
+(8, 10008, 4, 2, 2, 3, 'Pasaporte', 'Héctor', 'Vega', 'Masculino', '2000-06-15', 'hector.vega@example.com', 'password8', 'Colombiano', '70', '300', '5', '40', '60', '120', '2010-06-15', '8'),
+(9, 10009, 4, 3, 3, 4, 'Pasaporte', 'Andrés', 'Morales', 'Masculino', '2000-06-15', 'andres.morales@example.com', 'password9', 'Italiano', '72', '310', '5.2', '41', '61', '125', '2010-06-15', '8'),
+(10, 10010, 4, 1, 4, 5, 'Pasaporte', 'Javier', 'Santana', 'Masculino', '2000-06-15', 'javier.santana@example.com', 'password10', 'Frances', '73', '315', '5.4', '43', '63', '135', '2010-06-15', '9'),
+(11, 10011, 4, 2, 5, 1, 'Pasaporte', 'Hugo', 'Alonso', 'Masculino', '2000-06-15', 'hugo.alonso@example.com', 'password11', '71', 'Frances', '305', '5.1', '40', '60', '120', '2010-06-15', '8'),
+(12, 10012, 4, 3, 6, 2, 'Pasaporte', 'Mario', 'Domínguez', 'Masculino', '2000-06-15', 'mario.dominguez@example.com', 'password12', 'Frances', '74', '325', '5.6', '44', '64', '140', '2010-06-15', '9'),
+-- Ciclistas mujeres (6)
+(13, 10013, 4, 1, 1, 3, 'Pasaporte', 'Ana', 'Gómez', 'Femenino', '2000-06-15', 'ana.gomez@example.com', 'password13', 'Alemana', '65', '280', '4.5', '38', '58', '110', '2010-06-15', '7'),
+(14, 10014, 4, 2, 2, 4, 'Pasaporte', 'María', 'Rodríguez', 'Femenino', '2000-06-15', 'maria.rodriguez@example.com', 'password14', 'Alemana', '68', '290', '4.8', '39', '59', '115', '2010-06-15', '8'),
+(15, 10015, 4, 3, 3, 5, 'Pasaporte', 'Lucía', 'Hernández', 'Femenino', '2000-06-15', 'lucia.hernandez@example.com', 'password15', 'Alemana', '67', '285', '4.6', '37', '57', '105', '2010-06-15', '7'),
+(16, 10016, 4, 1, 4, 1, 'Pasaporte', 'Isabel', 'Díaz', 'Femenino', '2000-06-15', 'isabel.diaz@example.com', 'password16', 'Española', '64', '275', '4.3', '36', '56', '100', '2010-06-15', '6'),
+(17, 10017, 4, 2, 5, 2, 'Pasaporte', 'Laura', 'Jiménez', 'Femenino', '2000-06-15', 'laura.jimenez@example.com', 'password17', 'Española', '66', '280', '4.4', '37', '57', '105', '2010-06-15', '7'),
+(18, 10018, 4, 3, 6, 3, 'Pasaporte', 'Elena', 'Ruiz', 'Femenino', '2000-06-15', 'elena.ruiz@example.com', 'password18', 'Española', '65', '275', '4.3', '36', '56', '100', '2010-06-15', '6'),
+-- Directores de equipo (3 hombres)
+(19, 10019, 3, NULL, NULL, 1, 'Pasaporte', 'Pedro', 'Castillo', 'Masculino', '2000-06-15', 'pedro.castillo@example.com', 'password19', 'Frances', NULL, NULL, NULL, NULL, NULL, NULL, '2010-06-15', NULL),
+(20, 10020, 3, NULL, NULL, 2, 'Pasaporte', 'Javier', 'Torres', 'Masculino', '2000-06-15', 'javier.torres@example.com', 'password20', 'Colombiana', NULL, NULL, NULL, NULL, NULL, NULL, '2010-06-15', NULL),
+(21, 10021, 3, NULL, NULL, 3, 'Pasaporte', 'Ricardo', 'Luna', 'Masculino', '2000-06-15', 'ricardo.luna@example.com', 'password21', 'Italiano', NULL, NULL, NULL, NULL, NULL, NULL, '2010-06-15', NULL),
+-- Administradores (3 hombres)
+(22, 10022, 2, NULL, NULL, 1, 'Pasaporte', 'Tomás', 'Moreno', 'Masculino', '2000-06-15', 'tomas.moreno@example.com', 'password22', 'Colombiano', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(23, 10023, 2, NULL, NULL, 2, 'Pasaporte', 'Gonzalo', 'Rivas', 'Masculino', '2000-06-15', 'gonzalo.rivas@example.com', 'password23', 'Colombiano', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(24, 10024, 2, NULL, NULL, 3, 'Pasaporte', 'César', 'Núñez', 'Masculino', '2000-06-15', 'cesar.nunez@example.com', 'password24', NULL, 'Colombiano', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+-- Masajistas (1 mujer)
+(25, 10025, 1, NULL, NULL, NULL, 'Pasaporte', 'Beatriz', 'Sánchez', 'Femenino', '2000-06-15', 'beatriz.sanchez@example.com', 'password25','Alemana', NULL, NULL, NULL, NULL, NULL, NULL, '2010-06-15',NULL);
